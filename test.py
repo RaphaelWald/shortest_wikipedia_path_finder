@@ -31,8 +31,8 @@ BACKLINKS_PARAMS = {
     "bllimit": "max",
 }
 
-start = "Cristiano Ronaldo"
-end = "Thomas Schaaf"
+start = "Pietro Lombardi (singer)"
+end = "Helene Fischer"
 
 
 def get_all_links(page):
@@ -71,23 +71,6 @@ def get_all_backlinks(page):
         backlinks = backlinks + get_all_backlinks(page)
 
     return backlinks
-
-
-def bidirectional_BFS(start, end):
-    start_links = get_all_links(start)
-    end_backlinks = get_all_backlinks(end)
-
-    if end in start_links:
-        return [start, end]
-
-    paths = [[start, link, end] for link in start_links
-             if link in end_backlinks]
-
-    if paths:
-        return paths
-    else:
-        # recursion
-        pass
 
 
 def rec(link_lists, backlink_lists, forward, i):
@@ -135,13 +118,17 @@ def rec(link_lists, backlink_lists, forward, i):
             return rec(link_lists, backlink_lists, True, i + 1)
 
 
+def bidirectional_BFS(source, destination):
+    return rec([[source]], [[destination]], True, 0)
+
+
 def get_path(link_lists, backlink_lists, mid_link):
     return mid_link
 
 
 t0 = time.perf_counter()
 
-paths = rec([[start]], [[end]], True, 0)
+paths = bidirectional_BFS(start, end)
 print(paths)
 t1 = time.perf_counter()
 print(t1 - t0)
