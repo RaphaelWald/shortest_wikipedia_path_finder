@@ -11,11 +11,12 @@ def member():
 
 @app.route('/post', methods=['POST'])
 def testPost():
+    print(request)
     start = request.json["start"]
     destination = request.json["destination"]
-
+    print(f"{start} -> {destination}")
     paths = path_finder.bidirectional_BFS(start, destination)
-
+    print("Still working II")
     return json.dumps(paths)
 
 

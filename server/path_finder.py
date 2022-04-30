@@ -35,7 +35,7 @@ def bidirectional_BFS(source, destination):
             link_lists.append([])
             shortest_path_length = len(backlink_lists)
             for link in links:
-                mid_links = _get_all_links(link[0])
+                mid_links = _get_all_links(link)
                 link_lists[-1] = link_lists[-1] + mid_links
                 for mid_link in mid_links:
 
@@ -43,10 +43,7 @@ def bidirectional_BFS(source, destination):
                         for backlink in backlink_lists[i]:
                             if mid_link[0] == backlink[0]:
                                 shortest_path_length = i + 1
-                                path = _get_full_path(link_lists,
-                                                      backlink_lists,
-                                                      mid_link[0], mid_link[1],
-                                                      backlink[1])
+                                path = mid_link[-2::-1] + backlink
                                 paths.append(path)
                         if i == shortest_path_length:
                             break
@@ -62,17 +59,14 @@ def bidirectional_BFS(source, destination):
             backlink_lists.append([])
             shortest_path_length = len(link_lists)
             for backlink in backlinks:
-                mid_links = _get_all_backlinks(backlink[0])
+                mid_links = _get_all_backlinks(backlink)
                 backlink_lists[-1] = backlink_lists[-1] + mid_links
                 for mid_link in mid_links:
                     for i in range(shortest_path_length):
                         for link in link_lists[i]:
                             if mid_link[0] == link[0]:
                                 shortest_path_length = i + 1
-                                path = _get_full_path(link_lists,
-                                                      backlink_lists,
-                                                      mid_link[0], link[1],
-                                                      mid_link[1])
+                                path = link[-2::-1] + mid_link
                                 paths.append(path)
                         if i == shortest_path_length:
                             break
@@ -83,8 +77,11 @@ def bidirectional_BFS(source, destination):
                 return bi_bfs_recursion(link_lists, backlink_lists, True,
                                         i + 1)
 
-    return bi_bfs_recursion([[(source, "start")]], [[(destination, "end")]],
-                            True, 0)
+    link_lists, backlink_lists = [], []
+    link_lists.append([[source]])
+    backlink_lists.append([[destination]])
+
+    return bi_bfs_recursion(link_lists, backlink_lists, True, 0)
 
 
 def print_paths(paths):
@@ -96,7 +93,9 @@ def print_paths(paths):
                 print(f"{link} -> ", end="")
 
 
-def _get_all_links(page):
+def _get_all_links(path):
+    print(path)
+    page = path[0]
     LINKS_PARAMS["titles"] = page
     R = S.get(url=URL, params=LINKS_PARAMS)
     DATA = R.json()
@@ -108,15 +107,17 @@ def _get_all_links(page):
     for k, v in PAGES.items():
         if "links" in v.keys():
             for l in v["links"]:
-                links.append((l["title"], page))
+                links.append([l["title"]] + path)
 
     if "continue" in DATA.keys():
         LINKS_PARAMS["plcontinue"] = DATA["continue"]["plcontinue"]
-        links = links + _get_all_links(page)
+        links = links + _get_all_links(path)
     return links
 
 
-def _get_all_backlinks(page):
+def _get_all_backlinks(path):
+    print(path)
+    page = path[0]
     BACKLINKS_PARAMS["bltitle"] = page
     R = S.get(url=URL, params=BACKLINKS_PARAMS)
     DATA = R.json()
@@ -125,31 +126,10 @@ def _get_all_backlinks(page):
     backlinks = []
 
     for b in BACKLINKS:
-        backlinks.append((b["title"], page))
+        backlinks.append([b["title"]] + path)
 
     if "continue" in DATA.keys():
         BACKLINKS_PARAMS["blcontinue"] = DATA["continue"]["blcontinue"]
-        backlinks = backlinks + _get_all_backlinks(page)
+        backlinks = backlinks + _get_all_backlinks(path)
 
     return backlinks
-
-
-def _get_full_path(link_lists, backlink_lists, mid_link, pre, suc):
-    path = [mid_link]
-    current_pre = pre
-    while current_pre != "start":
-        for links in link_lists:
-            for link in links:
-                if current_pre == link[0]:
-                    path.insert(0, current_pre)
-                    current_pre = link[1]
-
-    current_suc = suc
-    while current_suc != "end":
-        for backlinks in backlink_lists:
-            for backlink in backlinks:
-                if current_suc == backlink[0]:
-                    path.append(current_suc)
-                    current_suc = backlink[1]
-
-    return path

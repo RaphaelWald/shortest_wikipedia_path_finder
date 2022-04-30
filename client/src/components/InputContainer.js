@@ -21,6 +21,8 @@ function InputContainer() {
       destination: destination,
     });
     setResults(true);
+    setStart(start);
+    setDestination(destination);
     setData(response.data);
     setSearchButton("Go!");
     console.log(response.data);
@@ -36,7 +38,7 @@ function InputContainer() {
 
   return (
     <div className="search-information">
-      <form className="search-form" id="search-form" name="search-form">
+      <div className="search-form" id="search-form" name="search-form">
         <div className="user-input">
           <input
             className="search-input"
@@ -70,8 +72,10 @@ function InputContainer() {
         >
           {searchButton}
         </button>
-      </form>
-      <div>{results ? <ResultsContainer results={data} /> : ""}</div>
+      </div>
+      <div className="results-container">
+        {results ? <ResultsContainer results={data} /> : ""}
+      </div>
     </div>
   );
 }

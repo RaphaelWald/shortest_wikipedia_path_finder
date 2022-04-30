@@ -4,6 +4,7 @@
 
 .user-input {
     display: inline-block;
+    margin: 20px;
 }
 
 .search-input {
@@ -19,10 +20,11 @@
 
 
 .input-button {
-    background-color: #38116e; /* Green */
+    background-color: #b487f3; /* Green */
     border: none;
     color: white;
     padding: 15px 32px;
+    margin: 10px 50px;
     text-align: center;
     text-decoration: none;
     font-size: 16px;
@@ -35,9 +37,11 @@
 
 #search-button {
     background-color: green;
+    width: 200px;
 }
 
 #search-button:hover {
     background-color: rgb(93, 220, 93);
     transition: 0.1s;
 }
+
