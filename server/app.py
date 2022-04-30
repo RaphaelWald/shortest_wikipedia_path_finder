@@ -16,7 +16,7 @@ def testPost():
 
     paths = path_finder.bidirectional_BFS(start, destination)
 
-    return str(paths)
+    return json.dumps(paths)
 
 
 if __name__ == "__main__":

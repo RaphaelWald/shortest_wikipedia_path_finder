@@ -36,7 +36,6 @@ def bidirectional_BFS(source, destination):
             shortest_path_length = len(backlink_lists)
             for link in links:
                 mid_links = _get_all_links(link[0])
-                print(mid_links)
                 link_lists[-1] = link_lists[-1] + mid_links
                 for mid_link in mid_links:
 
@@ -64,7 +63,6 @@ def bidirectional_BFS(source, destination):
             shortest_path_length = len(link_lists)
             for backlink in backlinks:
                 mid_links = _get_all_backlinks(backlink[0])
-                print(mid_links)
                 backlink_lists[-1] = backlink_lists[-1] + mid_links
                 for mid_link in mid_links:
                     for i in range(shortest_path_length):
@@ -140,7 +138,6 @@ def _get_full_path(link_lists, backlink_lists, mid_link, pre, suc):
     path = [mid_link]
     current_pre = pre
     while current_pre != "start":
-        print(current_pre)
         for links in link_lists:
             for link in links:
                 if current_pre == link[0]:

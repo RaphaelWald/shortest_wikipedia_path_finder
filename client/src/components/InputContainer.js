@@ -1,21 +1,28 @@
 import "./InputContainer.css";
 import { useState } from "react";
+import ResultsContainer from "./ResultsContainer";
 const axios = require("axios");
 
 function InputContainer() {
-  const [data, setData] = useState("NoData");
+  const [data, setData] = useState([]);
   const [start, setStart] = useState("");
   const [destination, setDestination] = useState("");
+  const [results, setResults] = useState(false);
+
+  const [searchButton, setSearchButton] = useState("Go!");
 
   const switchStr = "<=>";
 
   const clickHandler = async (event) => {
     event.preventDefault();
+    setSearchButton("Loading...");
     const response = await axios.post("/post", {
       start: start,
       destination: destination,
     });
+    setResults(true);
     setData(response.data);
+    setSearchButton("Go!");
     console.log(response.data);
   };
 
@@ -61,10 +68,10 @@ function InputContainer() {
           id="search-button"
           onClick={clickHandler}
         >
-          START SEARCH
+          {searchButton}
         </button>
       </form>
-      <p>{data}</p>
+      <div>{results ? <ResultsContainer results={data} /> : ""}</div>
     </div>
   );
 }

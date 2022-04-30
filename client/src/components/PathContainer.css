@@ -1,0 +1,9 @@
+.path-container {
+    display: block;
+    text-align: auto;
+    width: auto;
+    height: 60px;
+    background-color: rgb(192, 222, 255);
+    margin: 20px 200px;
+    border-radius: 5px;
+}

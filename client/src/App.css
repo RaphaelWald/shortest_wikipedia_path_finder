@@ -3,14 +3,15 @@ body {
 }
 
 h1 {
-  font-size: 46px;;;
+  font-size: 46px;
+  color: white;
 }
 
 .App-div {
     width: 1000px;
     text-align: center;
-    background-color: rgb(114, 176, 231);
+    background-color: rgb(42, 19, 57);
     padding: 20px 50px;
-    margin: auto;
+    margin: 40px auto;
     border-radius: 10px;;
 }
