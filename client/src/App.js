@@ -1,19 +1,11 @@
-import React, { useState } from "react";
+import "./App.css";
+import InputContainer from "./components/InputContainer";
 
 function App() {
   return (
-    <div>
-      <div>
-        <label>
-          Start
-          <input type="text" name="Start" />
-        </label>
-        <label>
-          Destination
-          <input type="text" name="Destination" />
-        </label>
-        <input type="submit" value="Submit" />
-      </div>
+    <div className="App-div">
+      <h1>Wikipedia Shortest Path Finder</h1>
+      <InputContainer />
     </div>
   );
 }
